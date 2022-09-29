@@ -86,13 +86,13 @@ class More extends Component {
                 <div className='LabelContainer mt10'>
                     <div>3。抢币购买</div>
                     <div className='Label'>3.1 输入购买支付ETHW数量</div>
-                    <div className='Label'>3.2 检测购买滑点，如果看到滑点比较高，请谨慎操作</div>
-                    <div className='Label'>3.3 输入要购买的代币合约，并点确定按钮</div>
-                    <div className='Label'>3.4 输入交易滑点</div>
+                    <div className='Label'>3.2 输入要购买的代币合约，并点确定按钮</div>
+                    <div className='Label'>3.3 输入交易滑点</div>
+                    <div className='Label'>3.4 检测交易滑点，如果看到滑点比较高，请谨慎操作</div>
                     <div className='Label'>3.5 导入钱包，注意是钱包，包括地址和私钥</div>
                     <div className='Label'>3.6 自动检测并购买</div>
                     <div className='Label'>3.7 点击自动检测购买中...，会停止自动检测</div>
-                    <div className='Label'>3.8 如果需要手动操作，批量购买就行</div>
+                    <div className='Label'>3.8 如果需要手动购买，批量购买就行，手动购买需要先检测交易滑点</div>
                 </div>
 
                 <div className="button ModuleTop" onClick={this.routerTo.bind(this,'/collect')}>归集钱包</div>
