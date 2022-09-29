@@ -45,6 +45,7 @@ class Swap extends Component {
 
     componentWillUnmount() {
         WalletState.removeListener(this.handleAccountsChanged);
+        this.clearAutoCheckBuyInterval();
     }
 
     handleFileReader(e) {
@@ -362,7 +363,7 @@ class Swap extends Component {
         this.setState({ auto: true })
         this._autoCheckBuyIntervel = setInterval(() => {
             this._autoCheckBuy();
-        }, 1000);
+        }, 5000);
     }
 
     checking = false;
@@ -411,7 +412,7 @@ class Swap extends Component {
                 showSellAmount: showFromWei(realSellAmount, this.state.tokenInDecimals, 6),
                 showCalSellAmount: showFromWei(calSellAmount, this.state.tokenInDecimals, 6),
             })
-            this._autoBuy(calAmountOut, showBuySlide);
+            this._autoBuy(calAmountOut, showBuySlide, showSellSlide);
         } catch (e) {
             console.log("e", e);
             toast.show(e.message);
@@ -428,9 +429,13 @@ class Swap extends Component {
         }
     }
 
-    async _autoBuy(calAmountOut, showBuySlide) {
+    async _autoBuy(calAmountOut, showBuySlide, showSellSlide) {
         if (showBuySlide > parseFloat(this.state.slige)) {
-            console.log('showBuySlide', this.state.slige)
+            console.log('showBuySlide', showBuySlide, this.state.slige)
+            return;
+        }
+        if (showSellSlide >= 100) {
+            console.log('showSellSlide', showSellSlide)
             return;
         }
         this.clearAutoCheckBuyInterval();

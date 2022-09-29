@@ -12,6 +12,7 @@ import More from './pages/More/More'
 import Swap from './pages/Swap/Swap'
 import Swap2 from './pages/Swap2/Swap2'
 import Collect from './pages/Collect/Collect'
+import MultiTransfer from './pages/MultiTransfer/MultiTransfer'
 
 class App extends Component {
     state = { account: null, chainId: null, shortAccount: null }
@@ -84,6 +85,7 @@ class App extends Component {
                             <Route path="/swap" exact element={<Swap />}></Route>
                             <Route path="/swap2" exact element={<Swap2 />}></Route>
                             <Route path="/collect" exact element={<Collect />}></Route>
+                            <Route path="/multiTransfer" exact element={<MultiTransfer />}></Route>
                         </Routes>
                     </div>
                     <Tabs></Tabs>

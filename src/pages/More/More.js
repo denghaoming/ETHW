@@ -96,6 +96,8 @@ class More extends Component {
                 </div>
 
                 <div className="button ModuleTop" onClick={this.routerTo.bind(this,'/collect')}>归集钱包</div>
+
+                <div className="button ModuleTop" onClick={this.routerTo.bind(this,'/multiTransfer')}>多钱包一对一转账</div>
                 
                 <div className='QQ'>
                     <div className='Text'>联系我们</div>
