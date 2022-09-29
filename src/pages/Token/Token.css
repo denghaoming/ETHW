@@ -80,6 +80,15 @@
 
 .Token .Contract {
     width: 93.6vw;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    padding-left: 12px;
+    padding-right: 12px;
+}
+
+.Token .LabelC {
+    width: 93.6vw;
     display: flex;
     align-items: center;
     padding-left: 12px;
@@ -175,14 +184,14 @@
 
 .Token .TokenAddress {
     width: 93.6vw;
-    height: 52px;
+    height: 44px;
     display: flex;
     align-items: center;
 }
 
 .Token .TokenAddress input {
     flex: 1;
-    height: 52px;
+    height: 44px;
     display: flex;
     align-items: center;
     padding-left: 12px;

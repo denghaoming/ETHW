@@ -499,13 +499,13 @@ class Swap extends Component {
                     <div className='Label'>%</div>
                 </div>
                 <div className="button ModuleTop" onClick={this.checkBuy.bind(this)}>检测交易滑点</div>
-                <div className='Contract Remark mt10'>
+                <div className='LabelC Remark mt10'>
                     检测结果：
                 </div>
-                <div className='Contract Remark'>
+                <div className='LabelC Remark'>
                     买入滑点：{this.state.showBuySlide}，可买入：{this.state.showBuyAmount}{this.state.tokenOutSymbol}
                 </div>
-                <div className='Contract Remark'>
+                <div className='LabelC Remark'>
                     卖出滑点：{this.state.showSellSlide}，可卖得：{this.state.showSellAmount}{CHAIN_SYMBOL}
                 </div>
 
