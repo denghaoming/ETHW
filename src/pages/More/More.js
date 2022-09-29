@@ -105,7 +105,7 @@ class More extends Component {
                     <div className='Text mb40' onClick={this.copyQQ.bind(this)}>Q群：103682866</div>
                 </div>
 
-                <a className="button ModuleTop mb30" href='https://github.com/denghaoming/Tools' target='_blank'>前端Github开源仓库</a>
+                <a className="button ModuleTop mb30" href='https://github.com/denghaoming/ETHW' target='_blank'>前端Github开源仓库</a>
             </div>
         );
     }
