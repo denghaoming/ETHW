@@ -10,9 +10,9 @@ import MultiSend from './pages/MultiSend/MultiSend'
 import Tabs from './Tabs'
 import More from './pages/More/More'
 import Swap from './pages/Swap/Swap'
-import Swap2 from './pages/Swap2/Swap2'
 import Collect from './pages/Collect/Collect'
 import MultiTransfer from './pages/MultiTransfer/MultiTransfer'
+import OrderSwap from './pages/OrderSwap/OrderSwap'
 
 class App extends Component {
     state = { account: null, chainId: null, shortAccount: null }
@@ -78,12 +78,12 @@ class App extends Component {
                 <div>
                     <div className="content">
                         <Routes>
-                            <Route path="/" exact element={<MultiSend />}></Route>
+                            <Route path="/" exact element={<Swap />}></Route>
+                            <Route path="/buy" exact element={<Swap />}></Route>
+                            <Route path="/orderSwap" exact element={<OrderSwap />}></Route>
+                            <Route path="/multiSend" exact element={<MultiSend />}></Route>
                             <Route path="/createWallets" exact element={<CreateWallet />}></Route>
                             <Route path="/more" exact element={<More />}></Route>
-                            <Route path="/multiSend" exact element={<MultiSend />}></Route>
-                            <Route path="/swap" exact element={<Swap />}></Route>
-                            <Route path="/swap2" exact element={<Swap2 />}></Route>
                             <Route path="/collect" exact element={<Collect />}></Route>
                             <Route path="/multiTransfer" exact element={<MultiTransfer />}></Route>
                         </Routes>

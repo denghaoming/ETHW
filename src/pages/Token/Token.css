@@ -256,3 +256,55 @@
     font-weight: 400;
     color: #19006480;
 }
+
+.Token .Token-Item{
+    width: 80px;
+    height: 32px;
+    border-radius: 14px 14px 14px 14px;
+    margin-right: 10px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.Token .Item-Sel{
+    border: 1px solid #00CB82;
+}
+
+.Token .Item-Nor{
+    border: 1px solid #19006480;
+}
+
+.Token .approveUsdt {
+    width: 44vw;
+    height: 40px;
+    color: #FFFFFF;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    background: #00CB82;
+    box-shadow: 4px 4px 20px 0px rgba(0, 0, 0, 0.1000);
+    border-radius: 14px 14px 14px 14px;
+    opacity: 1;
+    border: 1px solid #00CB82;
+    margin-right: 5.6vw;
+}
+
+.Token .approveToken {
+    width: 44vw;
+    height: 40px;
+    color: #FFFFFF;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    background: #32D9E3;
+    box-shadow: 0px 4px 0px 0px #00ADB8;
+    border-radius: 14px 14px 14px 14px;
+    opacity: 1;
+    border: 1px solid #32D9E3;
+}

@@ -3,9 +3,45 @@ import { CHAIN_ID, CHAIN_SYMBOL, CHAIN_ERROR_TIP } from '../abi/config'
 import toast from '../components/toast/toast'
 class WalletState {
     wallet = {
+        //应用内当前选择的链
+        chain: 'ETHW',
         chainId: null,
         account: null,
-        lang: "EN"
+        lang: "EN",
+        //当前链配置信息
+        chainConfig: {
+            chain: 'ETHW',
+            ChainId: 10001,
+            Symbol: 'ETHW',
+            RPC: 'https://mainnet.ethereumpow.org/',
+            Browser: 'https://www.oklink.com/en/ethw/',
+            USDT: '0x2AD7868CA212135C6119FD7AD1Ce51CFc5702892',
+            WETH: '0x7Bf88d2c0e32dE92CdaF2D43CcDc23e8Edfd5990',
+            Tokens: [{
+                Symbol: 'ETHW',
+                address: "0x7Bf88d2c0e32dE92CdaF2D43CcDc23e8Edfd5990",
+                decimals: 18,
+            }, {
+                Symbol: 'USDT',
+                address: "0x2AD7868CA212135C6119FD7AD1Ce51CFc5702892",
+                decimals: 6,
+            }, {
+                Symbol: 'USDC',
+                address: "0x25de68ef588cb0c2c8f3537861e828ae699cd0db",
+                decimals: 6,
+            }, {
+                Symbol: 'BUSD',
+                address: "0xf61eb8999f2f222f425d41da4c2ff4b6d8320c87",
+                decimals: 18,
+            }],
+            Dexs: [
+                {
+                    name: 'LFGSwap',
+                    SwapRouter: '0x4f381d5fF61ad1D0eC355fEd2Ac4000eA1e67854',
+                    logo: '',
+                }],
+            Common: '0x9724BD202B9Cc26Ab3Bc54CAD19F3C21477edE22',
+        },
     }
 
     config = {
@@ -20,7 +56,6 @@ class WalletState {
         SwapCheck: "0x8306096b68b8422f9BdBEEc00BFD181C33f63E6c",
         SwapCheck2: "0x3712B77abF2438BcB2BAc32A6B60D831bB8A1471",
         Tokens: ["0x7Bf88d2c0e32dE92CdaF2D43CcDc23e8Edfd5990",
-            "0x5F9eE0642d58795a94eE1c2DB055254D55a2974e",
             "0x2ad7868ca212135c6119fd7ad1ce51cfc5702892",
             "0x25de68ef588cb0c2c8f3537861e828ae699cd0db",
             "0xf61eb8999f2f222f425d41da4c2ff4b6d8320c87"],

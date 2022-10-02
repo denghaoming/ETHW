@@ -63,3 +63,40 @@ export function showCountdownTime(time) {
 
     return [day, hour, mitute, second];
 }
+
+export function fromWeiMore(wei, decimals) {
+    if (!wei) {
+        return "0";
+    }
+    if (decimals <= 18) {
+        let num = new BN(wei, 10).mul(new BN(10).pow(new BN(18 - decimals)));
+        return Web3.utils.fromWei(num, 'ether');
+    } else {
+        let num = new BN(wei, 10).mul(new BN(10).pow(new BN(30 - decimals)));
+        return Web3.utils.fromWei(num, 'tether');
+    }
+}
+
+//显示价格使用这个
+export function showFromWeiMore(wei, decimals, dots) {
+    let num = fromWeiMore(wei, decimals);
+    let index = num.indexOf('.');
+    if (index !== -1) {
+        num = num.substring(0, dots + index + 1)
+    } else {
+        num = num.substring(0)
+    }
+    if (num.endsWith('.')) {
+        num = num.substring(0, num.length - 1);
+    }
+    return num;
+}
+
+//价格转换为BN，用于比较大小
+export function toWeiMore(n) {
+    if (!n) {
+        return new BN(0);
+    }
+    let wei = new BN(Web3.utils.toWei(n, 'tether'), 10);
+    return wei;
+}

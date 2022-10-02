@@ -363,7 +363,7 @@ class Swap extends Component {
         this.setState({ auto: true })
         this._autoCheckBuyIntervel = setInterval(() => {
             this._autoCheckBuy();
-        }, 5000);
+        }, 6000);
     }
 
     checking = false;
