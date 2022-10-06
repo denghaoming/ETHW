@@ -39,6 +39,10 @@ class WalletState {
                     name: 'LFGSwap',
                     SwapRouter: '0x4f381d5fF61ad1D0eC355fEd2Ac4000eA1e67854',
                     logo: '',
+                }, {
+                    name: 'LFGSwap',
+                    SwapRouter: '0x4f381d5fF61ad1D0eC355fEd2Ac4000eA1e67854',
+                    logo: '',
                 }],
             Common: '0x9724BD202B9Cc26Ab3Bc54CAD19F3C21477edE22',
         },

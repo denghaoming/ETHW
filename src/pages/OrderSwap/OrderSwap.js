@@ -6,6 +6,7 @@ import toast from '../../components/toast/toast';
 import Web3 from 'web3'
 import { ERC20_ABI } from '../../abi/erc20';
 import { Common_ABI } from '../../abi/Common_ABI';
+import { SwapCheck_ABI } from '../../abi/SwapCheck_ABI';
 import { SwapRouter_ABI } from '../../abi/SwapRouter_ABI';
 import '../Token/Token.css'
 
@@ -489,6 +490,45 @@ class OrderSwap extends Component {
             console.log('priceInput', priceInput.toString());
             console.log('price', price.toString());
             if (this.state.refreshStatus == 'buy' && price.lte(priceInput)) {
+                let options = {
+                    timeout: 600000, // milliseconds,
+                    headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
+                };
+                const myWeb3 = new Web3(new Web3.providers.HttpProvider(this.state.rpcUrl, options));
+                const checkContract = new myWeb3.eth.Contract(SwapCheck_ABI, WalletState.config.SwapCheck);
+                let account = this.state.wallet.address;
+                //当前代币合约信息
+                let tokenOutInfo = this.state.tokenOutInfo;
+                let tokenAddress = tokenOutInfo.address;
+                let amountIn = toWei(this.state.amountIn, this.state.selectToken.decimals);
+                let transaction = await checkContract.methods.checkETHSwap(this.state.swapRouter, tokenAddress, WalletState.config.Tokens).call({ from: account, value: amountIn });
+                let pairOther = transaction[0];
+                let calAmountOut = new BN(transaction[1], 10);
+                let buyAmountOut = new BN(transaction[2], 10);
+                let calSellAmount = new BN(transaction[3], 10);
+                let realSellAmount = new BN(transaction[4], 10);
+                //买入滑点
+                let buySlige = new BN(0);
+                if (!calAmountOut.isZero()) {
+                    buySlige = buyAmountOut.mul(new BN(10000)).div(calAmountOut);
+                }
+                let showBuySlide = (10000 - buySlige.toNumber()) / 100;
+                //卖出滑点
+                let sellSlige = new BN(0);
+                if (!calSellAmount.isZero()) {
+                    sellSlige = realSellAmount.mul(new BN(10000)).div(calSellAmount);
+                }
+                let showSellSlide = (10000 - sellSlige.toNumber()) / 100;
+
+                if (showBuySlide > parseFloat(this.state.slige)) {
+                    console.log('showBuySlide', showBuySlide, this.state.slige)
+                    return;
+                }
+                if (showSellSlide >= 100) {
+                    console.log('showSellSlide', showSellSlide)
+                    return;
+                }
+
                 this.clearRefreshTokenPriceInterval();
                 this._swap('buy');
             } else if (this.state.refreshStatus == 'sell' && price.gte(priceInput)) {
