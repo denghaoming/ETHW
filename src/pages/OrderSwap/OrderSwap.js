@@ -52,7 +52,7 @@ class OrderSwap extends Component {
         gasMulti: null,
         //路由
         swapRouter: WalletState.wallet.chainConfig.Dexs[0].SwapRouter,
-        checkCanSell: false,
+        checkCanSell: true,
     }
 
     constructor(props) {
@@ -538,7 +538,7 @@ class OrderSwap extends Component {
                 }
                 console.log("tokenReserve", showFromWei(tokenInfo.tokenReserve, tokenInfo.decimals, 2));
                 if (new BN(tokenInfo.tokenReserve, 10).lt(toWei('10000', tokenInfo.decimals))) {
-                    return;
+                    // return;
                 }
                 this.clearRefreshTokenPriceInterval();
                 this._swap('buy');
