@@ -13,6 +13,7 @@ import Swap from './pages/Swap/Swap'
 import Collect from './pages/Collect/Collect'
 import MultiTransfer from './pages/MultiTransfer/MultiTransfer'
 import OrderSwap from './pages/OrderSwap/OrderSwap'
+import CopyTx from './pages/CopyTx/CopyTx'
 
 class App extends Component {
     state = { account: null, chainId: null, shortAccount: null }
@@ -86,6 +87,7 @@ class App extends Component {
                             <Route path="/more" exact element={<More />}></Route>
                             <Route path="/collect" exact element={<Collect />}></Route>
                             <Route path="/multiTransfer" exact element={<MultiTransfer />}></Route>
+                            <Route path="/copyTx" exact element={<CopyTx />}></Route>
                         </Routes>
                     </div>
                     <Tabs></Tabs>

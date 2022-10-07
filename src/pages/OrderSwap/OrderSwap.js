@@ -52,6 +52,7 @@ class OrderSwap extends Component {
         gasMulti: null,
         //路由
         swapRouter: WalletState.wallet.chainConfig.Dexs[0].SwapRouter,
+        checkCanSell: false,
     }
 
     constructor(props) {
@@ -490,45 +491,55 @@ class OrderSwap extends Component {
             console.log('priceInput', priceInput.toString());
             console.log('price', price.toString());
             if (this.state.refreshStatus == 'buy' && price.lte(priceInput)) {
-                let options = {
-                    timeout: 600000, // milliseconds,
-                    headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
-                };
-                const myWeb3 = new Web3(new Web3.providers.HttpProvider(this.state.rpcUrl, options));
-                const checkContract = new myWeb3.eth.Contract(SwapCheck_ABI, WalletState.config.SwapCheck);
-                let account = this.state.wallet.address;
-                //当前代币合约信息
-                let tokenOutInfo = this.state.tokenOutInfo;
-                let tokenAddress = tokenOutInfo.address;
-                let amountIn = toWei(this.state.amountIn, this.state.selectToken.decimals);
-                let transaction = await checkContract.methods.checkETHSwap(this.state.swapRouter, tokenAddress, WalletState.config.Tokens).call({ from: account, value: amountIn });
-                let pairOther = transaction[0];
-                let calAmountOut = new BN(transaction[1], 10);
-                let buyAmountOut = new BN(transaction[2], 10);
-                let calSellAmount = new BN(transaction[3], 10);
-                let realSellAmount = new BN(transaction[4], 10);
-                //买入滑点
-                let buySlige = new BN(0);
-                if (!calAmountOut.isZero()) {
-                    buySlige = buyAmountOut.mul(new BN(10000)).div(calAmountOut);
+                if (this.state.checkCanSell) {
+                    let options = {
+                        timeout: 600000, // milliseconds,
+                        headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
+                    };
+                    const myWeb3 = new Web3(new Web3.providers.HttpProvider(this.state.rpcUrl, options));
+                    const checkContract = new myWeb3.eth.Contract(SwapCheck_ABI, WalletState.config.SwapCheck);
+                    let account = this.state.wallet.address;
+                    //当前代币合约信息
+                    let tokenOutInfo = this.state.tokenOutInfo;
+                    let tokenAddress = tokenOutInfo.address;
+                    let amountIn = toWei(this.state.amountIn, this.state.selectToken.decimals);
+                    let transaction = await checkContract.methods.checkETHSwap(this.state.swapRouter, tokenAddress, WalletState.config.Tokens).call({ from: account, value: amountIn });
+                    let pairOther = transaction[0];
+                    let calAmountOut = new BN(transaction[1], 10);
+                    let buyAmountOut = new BN(transaction[2], 10);
+                    let calSellAmount = new BN(transaction[3], 10);
+                    let realSellAmount = new BN(transaction[4], 10);
+                    //买入滑点
+                    let buySlige = new BN(0);
+                    if (!calAmountOut.isZero()) {
+                        buySlige = buyAmountOut.mul(new BN(10000)).div(calAmountOut);
+                    }
+                    let showBuySlide = (10000 - buySlige.toNumber()) / 100;
+                    //卖出滑点
+                    let sellSlige = new BN(0);
+                    if (!calSellAmount.isZero()) {
+                        sellSlige = realSellAmount.mul(new BN(10000)).div(calSellAmount);
+                    }
+                    let showSellSlide = (10000 - sellSlige.toNumber()) / 100;
+                    console.log('showSlide', showBuySlide, showSellSlide)
+                    //滑点
+                    let slige = this.state.slige;
+                    if (!slige) {
+                        slige = '20';
+                    }
+                    if (showBuySlide > parseFloat(slige)) {
+                        console.log('showBuySlide', showBuySlide, slige)
+                        return;
+                    }
+                    if (showSellSlide >= 100) {
+                        console.log('showSellSlide', showSellSlide)
+                        return;
+                    }
                 }
-                let showBuySlide = (10000 - buySlige.toNumber()) / 100;
-                //卖出滑点
-                let sellSlige = new BN(0);
-                if (!calSellAmount.isZero()) {
-                    sellSlige = realSellAmount.mul(new BN(10000)).div(calSellAmount);
-                }
-                let showSellSlide = (10000 - sellSlige.toNumber()) / 100;
-
-                if (showBuySlide > parseFloat(this.state.slige)) {
-                    console.log('showBuySlide', showBuySlide, this.state.slige)
+                console.log("tokenReserve", showFromWei(tokenInfo.tokenReserve, tokenInfo.decimals, 2));
+                if (new BN(tokenInfo.tokenReserve, 10).lt(toWei('10000', tokenInfo.decimals))) {
                     return;
                 }
-                if (showSellSlide >= 100) {
-                    console.log('showSellSlide', showSellSlide)
-                    return;
-                }
-
                 this.clearRefreshTokenPriceInterval();
                 this._swap('buy');
             } else if (this.state.refreshStatus == 'sell' && price.gte(priceInput)) {
@@ -695,6 +706,7 @@ class OrderSwap extends Component {
             // 交易失败
             if (!transaction.status) {
                 toast.show("交易失败");
+                this.refreshTokenPrice(buyOrSell);
                 return;
             }
             console.log("交易成功");
@@ -703,6 +715,7 @@ class OrderSwap extends Component {
         } catch (e) {
             console.log("e", e);
             toast.show(e.message);
+            this.refreshTokenPrice(buyOrSell);
         } finally {
             loading.hide();
         }
