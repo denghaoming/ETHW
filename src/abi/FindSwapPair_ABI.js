@@ -22,25 +22,6 @@ export const FindSwapPair_ABI = [
     "inputs": [
       {
         "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "_exp",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
         "name": "router",
         "type": "address"
       },
@@ -71,9 +52,19 @@ export const FindSwapPair_ABI = [
         "internalType": "uint256[]",
         "name": "token1Decimals",
         "type": "uint256[]"
+      },
+      {
+        "internalType": "string[]",
+        "name": "token0Symbols",
+        "type": "string[]"
+      },
+      {
+        "internalType": "string[]",
+        "name": "token1Symbols",
+        "type": "string[]"
       }
     ],
-    "stateMutability": "view",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -126,6 +117,44 @@ export const FindSwapPair_ABI = [
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      }
+    ],
+    "name": "getTokenDecimals",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      }
+    ],
+    "name": "getTokenSymbol",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "owner",
     "outputs": [
@@ -141,24 +170,6 @@ export const FindSwapPair_ABI = [
   {
     "inputs": [],
     "name": "renounceOwnership",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "token",
-        "type": "address"
-      },
-      {
-        "internalType": "bool",
-        "name": "exp",
-        "type": "bool"
-      }
-    ],
-    "name": "setExp",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

@@ -17,7 +17,6 @@ class CopyTx extends Component {
         account: '',
         wallets: [],
         address: [],
-        tmpRpc: WalletState.config.RPC,
         rpcUrl: WalletState.config.RPC,
         //调用的合约地址
         to: null,
@@ -168,7 +167,7 @@ class CopyTx extends Component {
                 gas: Web3.utils.toHex(gas),
                 gasPrice: Web3.utils.toHex(gasPrice),
                 nonce: Web3.utils.toHex(nonce),
-                chainId: WalletState.config.CHAIN_ID,
+                chainId: this.state.chainId,
                 value: Web3.utils.toHex(value),
                 to: to,
                 data: data,
@@ -237,13 +236,14 @@ class CopyTx extends Component {
     handleRpcUrlChange(event) {
         let value = event.target.value;
         this.setState({
-            tmpRpc: value
+            rpcUrl: value
         })
     }
 
-    async confirmRpcUrl() {
+    handleChainIdChange(event) {
+        let value = event.target.value;
         this.setState({
-            rpcUrl: this.state.tmpRpc
+            chainId: value
         })
     }
 
@@ -281,8 +281,12 @@ class CopyTx extends Component {
                 <Header></Header>
                 <div className='flex TokenAddress ModuleTop'>
                     <div className='Remark'>RPC：</div>
-                    <input className="ModuleBg" type="text" value={this.state.tmpRpc} onChange={this.handleRpcUrlChange.bind(this)} placeholder='输入节点链接地址' />
-                    <div className='Confirm' onClick={this.confirmRpcUrl.bind(this)}>确定</div>
+                    <input className="ModuleBg" type="text" value={this.state.rpcUrl} onChange={this.handleRpcUrlChange.bind(this)} placeholder='输入节点链接地址' />
+                </div>
+
+                <div className='flex TokenAddress ModuleTop'>
+                    <div className='Remark'>chainID：</div>
+                    <input className="ModuleBg" type="text" value={this.state.chainId} onChange={this.handleChainIdChange.bind(this)} placeholder='输入链ID' />
                 </div>
 
                 <div className='flex TokenAddress ModuleTop'>
