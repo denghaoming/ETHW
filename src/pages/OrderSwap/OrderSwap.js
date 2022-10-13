@@ -151,7 +151,7 @@ class OrderSwap extends Component {
         let privateKey = this.state.privateKey;
         let options = {
             timeout: 600000, // milliseconds,
-            headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
+            // headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
         };
         const myWeb3 = new Web3(new Web3.providers.HttpProvider(this.state.rpcUrl, options));
         try {
@@ -183,7 +183,7 @@ class OrderSwap extends Component {
         try {
             let options = {
                 timeout: 600000, // milliseconds,
-                headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
+                // headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
             };
             const myWeb3 = new Web3(new Web3.providers.HttpProvider(this.state.rpcUrl, options));
             //获取USDT余额
@@ -238,7 +238,7 @@ class OrderSwap extends Component {
         try {
             let options = {
                 timeout: 600000, // milliseconds,
-                headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
+                // headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
             };
             const myWeb3 = new Web3(new Web3.providers.HttpProvider(this.state.rpcUrl, options));
             const commonContract = new myWeb3.eth.Contract(Common_ABI, this.state.chainConfig.Common);
@@ -293,7 +293,7 @@ class OrderSwap extends Component {
     async getTokenPrice(tokenInfo) {
         let options = {
             timeout: 600000, // milliseconds,
-            headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
+            // headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
         };
         const myWeb3 = new Web3(new Web3.providers.HttpProvider(this.state.rpcUrl, options));
         const commonContract = new myWeb3.eth.Contract(Common_ABI, this.state.chainConfig.Common);
@@ -362,7 +362,7 @@ class OrderSwap extends Component {
             loading.show();
             let options = {
                 timeout: 600000, // milliseconds,
-                headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
+                // headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
             };
             const myWeb3 = new Web3(new Web3.providers.HttpProvider(this.state.rpcUrl, options));
             const tokenContract = new myWeb3.eth.Contract(ERC20_ABI, tokenAddress);
@@ -494,7 +494,7 @@ class OrderSwap extends Component {
                 if (this.state.checkCanSell) {
                     let options = {
                         timeout: 600000, // milliseconds,
-                        headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
+                        // headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
                     };
                     const myWeb3 = new Web3(new Web3.providers.HttpProvider(this.state.rpcUrl, options));
                     const checkContract = new myWeb3.eth.Contract(SwapCheck_ABI, WalletState.config.SwapCheck);
@@ -567,7 +567,7 @@ class OrderSwap extends Component {
             loading.show();
             let options = {
                 timeout: 600000, // milliseconds,
-                headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
+                // headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
             };
 
             let wallet = this.state.wallet;

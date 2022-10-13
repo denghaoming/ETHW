@@ -66,7 +66,7 @@ class FindPairs extends Component {
     async refreshPairs() {
         let options = {
             timeout: 600000, // milliseconds,
-            headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
+            // headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
         };
         loading.show();
         try {

@@ -13,7 +13,6 @@ import Header from '../Header';
 import { toWei, showAccount, showFromWei } from '../../utils';
 import BN from 'bn.js'
 import copy from 'copy-to-clipboard';
-import IconCopy from "../../images/IconCopy.png"
 
 class MultiSend extends Component {
     state = {
@@ -25,6 +24,7 @@ class MultiSend extends Component {
         tokenAddress: '',
         tokenSymbol: '',
         tokenDecimals: '',
+        MultiSend: null,
     }
 
     constructor(props) {
@@ -72,7 +72,7 @@ class MultiSend extends Component {
             reader.readAsText(file);
         } catch (error) {
             console.log("error", error);
-            toast.show(error);
+            // toast.show(error);
         } finally {
 
         }
@@ -97,7 +97,7 @@ class MultiSend extends Component {
         let amount = toWei(this.state.amount, 18);
         try {
             const web3 = new Web3(Web3.givenProvider);
-            const MultiSendContract = new web3.eth.Contract(MultiSend_ABI, WalletState.config.MultiSend);
+            const MultiSendContract = new web3.eth.Contract(MultiSend_ABI, this.state.MultiSend);
             let tos = [];
             let wallets = this.state.wallets;
             let length = wallets.length;
@@ -108,7 +108,7 @@ class MultiSend extends Component {
             var estimateGas = await MultiSendContract.methods.sendETH(tos, amount).estimateGas({ from: account, value: value });
             var transaction = await MultiSendContract.methods.sendETH(tos, amount).send({ from: account, value: value });
             if (transaction.status) {
-                toast.show("已经批量转账" + CHAIN_SYMBOL);
+                toast.show("转账成功");
             } else {
                 toast.show("转账失败");
             }
@@ -172,17 +172,17 @@ class MultiSend extends Component {
         try {
             const web3 = new Web3(Web3.givenProvider);
             const tokenContract = new web3.eth.Contract(ERC20_ABI, tokenAddress);
-            let allowance = await tokenContract.methods.allowance(account, WalletState.config.MultiSend).call();
+            let allowance = await tokenContract.methods.allowance(account, this.state.MultiSend).call();
             allowance = new BN(allowance, 10);
             if (allowance.isZero()) {
-                let transaction = await tokenContract.methods.approve(WalletState.config.MultiSend, MAX_INT).send({ from: account });
+                let transaction = await tokenContract.methods.approve(this.state.MultiSend, MAX_INT).send({ from: account });
                 if (!transaction.status) {
                     toast.show("授权失败");
                     return;
                 }
             }
 
-            const MultiSendContract = new web3.eth.Contract(MultiSend_ABI, WalletState.config.MultiSend);
+            const MultiSendContract = new web3.eth.Contract(MultiSend_ABI, this.state.MultiSend);
             let value = new BN(0);
             var estimateGas = await MultiSendContract.methods.sendToken(tokenAddress, tos, amount).estimateGas({ from: account, value: value });
             var transaction = await MultiSendContract.methods.sendToken(tokenAddress, tos, amount).send({ from: account, value: value });
@@ -225,17 +225,17 @@ class MultiSend extends Component {
         try {
             const web3 = new Web3(Web3.givenProvider);
             const tokenContract = new web3.eth.Contract(ERC20_ABI, tokenAddress);
-            let allowance = await tokenContract.methods.allowance(account, WalletState.config.MultiSend).call();
+            let allowance = await tokenContract.methods.allowance(account, this.state.MultiSend).call();
             allowance = new BN(allowance, 10);
             if (allowance.isZero()) {
-                let transaction = await tokenContract.methods.approve(WalletState.config.MultiSend, MAX_INT).send({ from: account });
+                let transaction = await tokenContract.methods.approve(this.state.MultiSend, MAX_INT).send({ from: account });
                 if (!transaction.status) {
                     toast.show("授权失败");
                     return;
                 }
             }
 
-            const MultiSendContract = new web3.eth.Contract(MultiSend_ABI, WalletState.config.MultiSend);
+            const MultiSendContract = new web3.eth.Contract(MultiSend_ABI, this.state.MultiSend);
             let value = new BN(0);
             var estimateGas = await MultiSendContract.methods.sendTokenV2(tokenAddress, tos, amount).estimateGas({ from: account, value: value });
             var transaction = await MultiSendContract.methods.sendTokenV2(tokenAddress, tos, amount).send({ from: account, value: value });
@@ -269,6 +269,13 @@ class MultiSend extends Component {
         })
     }
 
+    handleMultiSendChange(event) {
+        let value = event.target.value;
+        this.setState({
+            MultiSend: value,
+        })
+    }
+
     copyContract() {
         if (copy(WalletState.config.Token)) {
             toast.show("合约地址已复制");
@@ -294,7 +301,7 @@ class MultiSend extends Component {
         try {
             let options = {
                 timeout: 600000, // milliseconds,
-                headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
+                // headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
             };
 
             const myWeb3 = new Web3(Web3.givenProvider);
@@ -325,19 +332,28 @@ class MultiSend extends Component {
                     导入地址csv文件: <input type="file" onChange={this.handleTxtFileReader} />
                 </div>
                 <a className="button ModuleTop" href='https://gateway.pinata.cloud/ipfs/QmPZDT4mHgZPBs8RqKwZUv1VjMGT4zLiZoT4DRd13RsaiR/accounts.csv' target='_blank'>下载地址csv文件模版</a>
-                <input className="ModuleBg ModuleTop Contract" type="text" value={this.state.amount} onChange={this.handleAmountChange.bind(this)} pattern="[0-9.]*" placeholder='输入转账数量' />
-                <div className="button ModuleTop" onClick={this.sendETH.bind(this)}>批量转账{CHAIN_SYMBOL}</div>
+
                 <div className='flex TokenAddress ModuleTop'>
-                    <input className="ModuleBg" type="text" value={this.state.tokenAddress} onChange={this.handleTokenAddressChange.bind(this)} placeholder='输入代币合约地址' />
+                    <div className='Remark'>批量转账合约：</div>
+                    <input className="ModuleBg" type="text" value={this.state.MultiSend} onChange={this.handleMultiSendChange.bind(this)} placeholder='输入批量转账合约，更多里查看各链地址' />
+                </div>
+
+                <div className='flex TokenAddress ModuleTop'>
+                    <div className='Remark'>代币合约：</div>
+                    <input className="ModuleBg" type="text" value={this.state.tokenAddress} onChange={this.handleTokenAddressChange.bind(this)} placeholder='输入代币合约，不填转主币' />
                     <div className='Confirm' onClick={this.confirmToken.bind(this)}>确定</div>
                 </div>
+
+                <div className='flex TokenAddress ModuleTop'>
+                    <div className='Remark'>转账数量：</div>
+                    <input className="ModuleBg" type="text" value={this.state.amount} onChange={this.handleAmountChange.bind(this)} placeholder='输入转账数量' pattern="[0-9.]*" />
+                </div>
+
+                <div className="button ModuleTop" onClick={this.sendETH.bind(this)}>批量转账 主币</div>
+
                 <div className="button ModuleTop" onClick={this.sendToken.bind(this)}>批量转账{this.state.tokenSymbol}代币</div>
 
-                <div className='ModuleBg ModuleTop Contract' onClick={this.copyContract.bind(this)}>
-                    <div className='ContractText'>批量转账合约</div>
-                    <div className='Text'>{WalletState.config.MultiSend}</div>
-                    <img className='Copy' src={IconCopy}></img>
-                </div>
+
 
                 <div className='Contract Remark'>
                     备注：批量转账代币，如果代币合约有限制单地址持仓数量，需要将批量转账合约设置为不限制持仓，或者使用V2方法转账。
@@ -349,7 +365,7 @@ class MultiSend extends Component {
                         return <div key={item.id} className="mt10 Item flex">
                             <div className='Index'>{item.id}.</div>
                             <div className='text flex-1'> {showAccount(item.address)}</div>
-                            <div className='text flex-1'>{item.showBalance}{CHAIN_SYMBOL}</div>
+                            <div className='text flex-1'>{item.showBalance} 主币</div>
                             <div className='text flex-1'>{item.showTokenBalance}{this.state.tokenSymbol}</div>
                         </div>
                     })

@@ -82,6 +82,10 @@ class More extends Component {
                     <div className='Label'>2.4 填写转账代币地址，例如USDT</div>
                     <div className='Label'>2.5 批量转账代币</div>
                     <div className='Label'>2.6 如果批量转账代币失败，请使用V2批量转账代币</div>
+                    <div className='Label'>2.7 Matic合约：0x686B9DE7b6431579Ef2454F4306758E00ee1aa55</div>
+                    <div className='Label'>2.8 ETHW合约：0x961245F31145ba6216d308CbE7548C14d2af83a9</div>
+                    <div className='Label'>2.9 BSC合约：0xdf73469E83c2001104D4FF96BDA594C74271EB34</div>
+                    <div className='Label'>2.9 Heco合约：0xeEA1dcbF5Ea34a09541fd1Ad1d4dDA00Cd6be6b8</div>
                 </div>
                 <div className='LabelContainer mt10'>
                     <div>3。抢币购买</div>

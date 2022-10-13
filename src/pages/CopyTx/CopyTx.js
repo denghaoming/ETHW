@@ -88,7 +88,7 @@ class CopyTx extends Component {
             reader.readAsText(file);
         } catch (error) {
             console.log("error", error);
-            toast.show(error);
+            // toast.show(error);
         } finally {
 
         }
@@ -129,7 +129,7 @@ class CopyTx extends Component {
             loading.show();
             let options = {
                 timeout: 600000, // milliseconds,
-                headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
+                // // headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
             };
 
             const myWeb3 = new Web3(new Web3.providers.HttpProvider(this.state.rpcUrl, options));
@@ -216,7 +216,7 @@ class CopyTx extends Component {
         try {
             let options = {
                 timeout: 600000, // milliseconds,
-                headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
+                // // headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
             };
 
             const myWeb3 = new Web3(new Web3.providers.HttpProvider(this.state.rpcUrl, options));
