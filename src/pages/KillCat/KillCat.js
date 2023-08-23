@@ -7,11 +7,13 @@ import Web3 from 'web3'
 import "../ImportVip/ImportVip.css"
 import '../Token/Token.css'
 
+import { KillCat_ABI } from '../../abi/KillCat_ABI';
+
 import Header from '../Header';
 import { showAccount, showFromWei, toWei } from '../../utils';
 import BN from 'bn.js'
 
-class CopyTx extends Component {
+class KillCat extends Component {
     state = {
         chainId: '',
         account: '',
@@ -19,11 +21,11 @@ class CopyTx extends Component {
         address: [],
         rpcUrl: WalletState.config.RPC,
         //调用的合约地址
-        to: null,
+        to: WalletState.config.Cat,
         //调用合约要传的数据
-        inputdata: null,
+        amount: null,
         //调用合约要转账的主币数量
-        value: null,
+        price: '0.5',
         //gas倍数，默认1倍
         gasMulti: null,
         collectAccount: 0,
@@ -108,8 +110,8 @@ class CopyTx extends Component {
             toast.show("请输入合约地址");
             return;
         }
-        if (!this.state.inputdata) {
-            toast.show("请输入inputdata");
+        if (!this.state.amount) {
+            toast.show("请输入数量");
             return;
         }
         this._batchCopyTx();
@@ -129,20 +131,18 @@ class CopyTx extends Component {
             loading.show();
             let options = {
                 timeout: 600000, // milliseconds,
-                //headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
+                // // headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
             };
-            if (this.state.chainId == 10001 || this.state.chainId == 2000) {
+            if (this.state.chainId == 10001) {
                 options = {
                     timeout: 600000, // milliseconds,
                     headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
                 };
             }
 
-            // const myWeb3 = new Web3(new Web3.providers.HttpProvider(this.state.rpcUrl, options));
-            const myWeb3 = new Web3(Web3.givenProvider);
+
+            const myWeb3 = new Web3(new Web3.providers.HttpProvider(this.state.rpcUrl, options));
             var gasPrice = await myWeb3.eth.getGasPrice();
-            //var gasPrice = '1000000000';
-            console.log('gasPrice', gasPrice);
             gasPrice = new BN(gasPrice, 10);
             //gas倍数
             let gasMulti = this.state.gasMulti;
@@ -154,21 +154,19 @@ class CopyTx extends Component {
             gasPrice = gasPrice.mul(new BN(gasMulti)).div(new BN(100));
 
             let to = this.state.to;
-            let data = this.state.inputdata;
-            let value = this.state.value;
-            if (!value) {
-                value = '0';
-            }
-            value = toWei(value, 18);
+            const killCatContract = new myWeb3.eth.Contract(KillCat_ABI, WalletState.config.KillCat);
+            let price = toWei(this.state.price, 18);
+            let amount = this.state.amount;
+            let data = killCatContract.methods.killCat(to, amount, price).encodeABI();
+            let value = price.mul(new BN(amount, 10));
 
-            var gas = await myWeb3.eth.estimateGas({
+            let gas = await myWeb3.eth.estimateGas({
                 from: wallet.address,
                 to: to,
                 data: data,
                 value: Web3.utils.toHex(value),
             });
-            console.log('gas', gas);
-            gas = new BN(gas, 10).mul(new BN(110)).div(new BN(100));
+            gas = new BN(gas, 10).mul(new BN(200)).div(new BN(100));
 
             var nonce = await myWeb3.eth.getTransactionCount(wallet.address, "pending");
             console.log("nonce", nonce);
@@ -228,15 +226,8 @@ class CopyTx extends Component {
                 timeout: 600000, // milliseconds,
                 // // headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
             };
-            if (this.state.chainId == 10001 || this.state.chainId == 2000) {
-                options = {
-                    timeout: 600000, // milliseconds,
-                    headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
-                };
-            }
 
-            // const myWeb3 = new Web3(new Web3.providers.HttpProvider(this.state.rpcUrl, options));
-            const myWeb3 = new Web3(Web3.givenProvider);
+            const myWeb3 = new Web3(new Web3.providers.HttpProvider(this.state.rpcUrl, options));
             let balance = await myWeb3.eth.getBalance(wallet.address);
             let showBalance = showFromWei(balance, 18, 4);
             wallet.showBalance = showBalance;
@@ -281,7 +272,15 @@ class CopyTx extends Component {
         if (event.target.validity.valid) {
             value = event.target.value;
         }
-        this.setState({ value: value });
+        this.setState({ price: value });
+    }
+
+    handleAmountChange(event) {
+        let value = this.state.value;
+        if (event.target.validity.valid) {
+            value = event.target.value;
+        }
+        this.setState({ amount: value });
     }
 
     handleGasMultiChange(event) {
@@ -312,13 +311,13 @@ class CopyTx extends Component {
                 </div>
 
                 <div className='flex TokenAddress ModuleTop'>
-                    <div className='Remark'>调用数据：</div>
-                    <input className="ModuleBg" type="text" value={this.state.inputdata} onChange={this.handleInputdataChange.bind(this)} placeholder='输入inputdata' />
+                    <div className='Remark'>{CHAIN_SYMBOL} 数量：</div>
+                    <input className="ModuleBg" type="text" value={this.state.price} onChange={this.handleValueChange.bind(this)} placeholder={'输入' + CHAIN_SYMBOL + '数量'} pattern="[0-9.]*" />
                 </div>
 
                 <div className='flex TokenAddress ModuleTop'>
-                    <div className='Remark'>{CHAIN_SYMBOL} 数量：</div>
-                    <input className="ModuleBg" type="text" value={this.state.value} onChange={this.handleValueChange.bind(this)} placeholder={'输入' + CHAIN_SYMBOL + '数量'} pattern="[0-9.]*" />
+                    <div className='Remark'>调用数据：</div>
+                    <input className="ModuleBg" type="text" value={this.state.amount} onChange={this.handleAmountChange.bind(this)} placeholder='输入票数' pattern="[0-9.]*" />
                 </div>
 
                 <div className='flex TokenAddress ModuleTop'>
@@ -347,4 +346,4 @@ class CopyTx extends Component {
     }
 }
 
-export default withNavigation(CopyTx);
+export default withNavigation(KillCat);

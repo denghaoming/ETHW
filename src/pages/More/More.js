@@ -86,6 +86,9 @@ class More extends Component {
                     <div className='Label'>2.8 ETHW合约：0x961245F31145ba6216d308CbE7548C14d2af83a9</div>
                     <div className='Label'>2.9 BSC合约：0xdf73469E83c2001104D4FF96BDA594C74271EB34</div>
                     <div className='Label'>2.9 Heco合约：0xeEA1dcbF5Ea34a09541fd1Ad1d4dDA00Cd6be6b8</div>
+                    <div className='Label'>2.10 DogeChain合约：0x286BC33Bd2f6C43FA41B3256ABDcC3fDbf6502ae</div>
+                    <div className='Label'>2.11 TX链 合约：0xE9007A4C300A8afE7Daed835196aF3AD4E9d5950</div>
+                    <div className='Label'>2.12 OKX链 合约：0x6B0e3746D76c5364F3a2C00511C53F5C01701d22</div>
                 </div>
                 <div className='LabelContainer mt10'>
                     <div>3。抢币购买</div>
@@ -99,12 +102,12 @@ class More extends Component {
                     <div className='Label'>3.8 如果需要手动购买，批量购买就行，手动购买需要先检测交易滑点</div>
                 </div>
 
-                <div className="button ModuleTop" onClick={this.routerTo.bind(this,'/collect')}>归集钱包</div>
+                <div className="button ModuleTop" onClick={this.routerTo.bind(this, '/collect')}>归集钱包</div>
 
-                <div className="button ModuleTop" onClick={this.routerTo.bind(this,'/multiTransfer')}>多钱包一对一转账</div>
+                <div className="button ModuleTop" onClick={this.routerTo.bind(this, '/multiTransfer')}>多钱包一对一转账</div>
 
-                <div className="button ModuleTop" onClick={this.routerTo.bind(this,'/copyTx')}>克隆交易</div>
-                
+                <div className="button ModuleTop" onClick={this.routerTo.bind(this, '/copyTx')}>克隆交易</div>
+
                 <div className='QQ'>
                     <div className='Text'>联系我们</div>
                     <img src={IconQQ}></img>

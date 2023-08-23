@@ -600,6 +600,8 @@ class OrderSwap extends Component {
                 path.push(selectToken.address);
             }
 
+            console.log('path',path);
+
             //预估能得到多少代币
             let amountOuts = await swapContract.methods.getAmountsOut(amountIn, path).call();
             let amountOut = new BN(amountOuts[amountOuts.length - 1], 10);

@@ -22,7 +22,7 @@ class Collect extends Component {
         wallets: [],
         address: [],
         amountIn: null,
-        tokenIn: WalletState.config.USDT,
+        tokenIn: null,
         collectAccount: 0,
         tmpRpc: WalletState.config.RPC,
         rpcUrl: WalletState.config.RPC,
@@ -34,7 +34,6 @@ class Collect extends Component {
         this.handleFileReader = this.handleFileReader.bind(this);
         this._batchCollect = this._batchCollect.bind(this);
         this._batchCollectToken = this._batchCollectToken.bind(this);
-        this.confirmTokenIn();
     }
 
     componentDidMount() {
@@ -140,7 +139,8 @@ class Collect extends Component {
                 // headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
             };
 
-            const myWeb3 = new Web3(new Web3.providers.HttpProvider(this.state.rpcUrl, options));
+            // const myWeb3 = new Web3(new Web3.providers.HttpProvider(this.state.rpcUrl, options));
+            const myWeb3 = new Web3(Web3.givenProvider);
             const tokenContract = new myWeb3.eth.Contract(ERC20_ABI, this.state.tokenIn);
             let balance = await tokenContract.methods.balanceOf(wallet.address).call();
             console.log(balance, this.state.tokenInSymbol);
@@ -172,7 +172,7 @@ class Collect extends Component {
                 gas: Web3.utils.toHex(gas),
                 gasPrice: Web3.utils.toHex(gasPrice),
                 nonce: Web3.utils.toHex(nonce),
-                chainId: WalletState.config.CHAIN_ID,
+                chainId: this.state.chainId,
                 value: Web3.utils.toHex("0"),
                 to: this.state.tokenIn,
                 data: data,
@@ -211,7 +211,7 @@ class Collect extends Component {
 
     async batchGetTokenBalance() {
         if (!this.state.tokenIn) {
-            return;
+            // return;
         }
         setTimeout(() => {
             let wallets = this.state.wallets;
@@ -229,11 +229,13 @@ class Collect extends Component {
                 // headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
             };
 
-            const myWeb3 = new Web3(new Web3.providers.HttpProvider(this.state.rpcUrl, options));
-            const tokenContract = new myWeb3.eth.Contract(ERC20_ABI, this.state.tokenIn);
-            let tokenBalance = await tokenContract.methods.balanceOf(wallet.address).call();
-            let showTokenBalance = showFromWei(tokenBalance, this.state.tokenInDecimals, 4);
-            wallet.showTokenBalance = showTokenBalance;
+            const myWeb3 = new Web3(Web3.givenProvider);
+            if(this.state.tokenIn){
+                const tokenContract = new myWeb3.eth.Contract(ERC20_ABI, this.state.tokenIn);
+                let tokenBalance = await tokenContract.methods.balanceOf(wallet.address).call();
+                let showTokenBalance = showFromWei(tokenBalance, this.state.tokenInDecimals, 4);
+                wallet.showTokenBalance = showTokenBalance;
+            }
             let balance = await myWeb3.eth.getBalance(wallet.address);
             let showBalance = showFromWei(balance, 18, 4);
             wallet.showBalance = showBalance;
@@ -338,7 +340,8 @@ class Collect extends Component {
                 // headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
             };
 
-            const myWeb3 = new Web3(new Web3.providers.HttpProvider(this.state.rpcUrl, options));
+            // const myWeb3 = new Web3(new Web3.providers.HttpProvider(this.state.rpcUrl, options));
+            const myWeb3 = new Web3(Web3.givenProvider);
             let balance = await myWeb3.eth.getBalance(wallet.address);
             console.log(showFromWei(balance, 18, 6), CHAIN_SYMBOL);
             balance = new BN(balance, 10);
@@ -346,7 +349,7 @@ class Collect extends Component {
             console.log("gasPrice", gasPrice);
             gasPrice = new BN(gasPrice, 10);
             console.log("gasPrice", gasPrice);
-            let gas = new BN("21000", 10).mul(new BN("130", 10)).div(new BN("100", 10));
+            let gas = new BN("2000000", 10).mul(new BN("110", 10)).div(new BN("100", 10));
             console.log("gas", gas);
 
             var fee = new BN(gas, 10).mul(new BN(gasPrice, 10));
@@ -368,7 +371,7 @@ class Collect extends Component {
                 gas: Web3.utils.toHex(gas),
                 gasPrice: Web3.utils.toHex(gasPrice),
                 nonce: Web3.utils.toHex(nonce),
-                chainId: WalletState.config.CHAIN_ID,
+                chainId: this.state.chainId,
                 value: Web3.utils.toHex(value),
                 to: this.state.to,
                 from: wallet.address,

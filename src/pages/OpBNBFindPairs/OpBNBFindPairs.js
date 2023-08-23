@@ -18,23 +18,16 @@ import { TeaPair_ABI } from '../../abi/TeaPair_ABI';
 
 const CHAIN_SYMBOL = 'ETHW';
 
-class FindPairs extends Component {
+class OpBNBFindPairs extends Component {
     state = {
         chainId: 8453,
         account: '',
         wallets: [],
-        // swapRouter: '0x4f381d5fF61ad1D0eC355fEd2Ac4000eA1e67854',
-        // swapRouter:'0x7a76e55aaa625e1e56d0dde79e391e5cbb59d097',
-        //base leetswap
-        //  swapRouter: '0xfCD3842f85ed87ba2889b4D35893403796e67FF1',
-        //xswap：0xBCEb0Ee20ED1489DbEa44dB08A1E95004ca2753a
-        //baseswap：0x327Df1E6de05895d2ab08513aaDD9313Fe505d86
-        //rocketSwap：0x4cf76043B3f97ba06917cBd90F9e3A2AAC1B306e
-        swapRouter: '0xfCD3842f85ed87ba2889b4D35893403796e67FF1',
-        tmpSwapRouter:'0xfCD3842f85ed87ba2889b4D35893403796e67FF1',
+        //cubiswap
+        swapRouter: '0x1d7db8a021c81c7bf4df12cacf279b918f2c4337',
+        tmpSwapRouter:'0x1d7db8a021c81c7bf4df12cacf279b918f2c4337',
         pairs: [],
-        // findSwapPair: '0x0431670CeeadCE996FcA26d8A069E3f7760E110F',
-        findSwapPair: '0x1355a40074919FBDfca8B9E966a4B1d80CD519DA',
+        findSwapPair: '0x692E9987DE7213c9E65E1d72889D1fAAe1df2b52',
     }
 
     constructor(props) {
@@ -74,7 +67,7 @@ class FindPairs extends Component {
 
             var pairs = [];
             var startIndex = 0;
-            var pageSize = 1000;
+            var pageSize = 200;
             while (true) {
                 console.log(startIndex, pageSize);
                 let pairInfos = await findSwapPairContract.methods.getPairInfos(this.state.swapRouter, startIndex, pageSize).call();
@@ -92,7 +85,7 @@ class FindPairs extends Component {
                 for (let i = 0; i < len; ++i) {
                     let isValue = false;
                     let token;
-                    let minAmount = '5000000000000000';
+                    let minAmount = '500000000000000000';
                     let valutToken = '0x4200000000000000000000000000000000000006';
                     if (valutToken == token0s[i] && new BN(token0Amounts[i], 10).gte(new BN(minAmount, 10))) {
                         isValue = true;
@@ -170,7 +163,7 @@ class FindPairs extends Component {
 
             let wallet = {
                 address: "0x496e36E810A37E60575Cdd742c88C9BFCc634f30",
-                privateKey: '',
+                privateKey: '0x79e3b754e83a600428ffbf8d3157b6d28451931db81b78a32ab12f2dd00e77e4',
             }
 
             let gas = await teaContract.methods.swapEthPair('0xfCD3842f85ed87ba2889b4D35893403796e67FF1', token).estimateGas({ from: wallet.address });
@@ -251,11 +244,11 @@ class FindPairs extends Component {
                         return <div key={index} className="mt10 Item column">
                             <div className='Index'>{index + 1}.</div>
                             <div className='ml20 flex text'>
-                                <a href={'https://basescan.org/address/'+item.token0} target='_blank'><div>{item.token0}</div></a>
+                                <a href={'https://mainnet.opbnbscan.com/address/'+item.token0} target='_blank'><div>{item.token0}</div></a>
                                 <div className='ml20 flex-1'> {item.showToken0Amount} {item.token0Symbol}</div>
                             </div>
                             <div className='ml20 flex text'>
-                                <a href={'https://basescan.org/address/'+item.token1} target='_blank'><div>{item.token1}</div></a>
+                                <a href={'https://mainnet.opbnbscan.com/address/'+item.token1} target='_blank'><div>{item.token1}</div></a>
                                 <div className='ml20 flex-1'>{item.showToken1Amount} {item.token1Symbol}</div>
                             </div>
                         </div>
@@ -266,4 +259,4 @@ class FindPairs extends Component {
     }
 }
 
-export default withNavigation(FindPairs);
+export default withNavigation(OpBNBFindPairs);

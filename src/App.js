@@ -15,6 +15,12 @@ import MultiTransfer from './pages/MultiTransfer/MultiTransfer'
 import OrderSwap from './pages/OrderSwap/OrderSwap'
 import CopyTx from './pages/CopyTx/CopyTx'
 import FindPairs from './pages/FindPairs/FindPairs'
+import KillCat from './pages/KillCat/KillCat'
+import Speed from './pages/Speed/Speed'
+import ScanWETH from './pages/ScanWETH/ScanWETH'
+import FindV3Pairs from './pages/FindV3Pairs/FindV3Pairs'
+import OpBNBFindPairs from './pages/OpBNBFindPairs/OpBNBFindPairs'
+
 
 class App extends Component {
     state = { account: null, chainId: null, shortAccount: null }
@@ -89,7 +95,12 @@ class App extends Component {
                             <Route path="/collect" exact element={<Collect />}></Route>
                             <Route path="/multiTransfer" exact element={<MultiTransfer />}></Route>
                             <Route path="/copyTx" exact element={<CopyTx />}></Route>
+                            <Route path="/killCat" exact element={<KillCat />}></Route>
+                            <Route path="/speed" exact element={<Speed />}></Route>
                             <Route path="/findPairs" exact element={<FindPairs />}></Route>
+                            <Route path="/findV3Pairs" exact element={<FindV3Pairs />}></Route>
+                            <Route path="/scanWETH" exact element={<ScanWETH />}></Route>
+                            <Route path="/opBNBPairs" exact element={<OpBNBFindPairs />}></Route>
                         </Routes>
                     </div>
                     <Tabs></Tabs>

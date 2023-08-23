@@ -24,7 +24,7 @@ class MultiSend extends Component {
         tokenAddress: '',
         tokenSymbol: '',
         tokenDecimals: '',
-        MultiSend: null,
+        MultiSend: '0x961245F31145ba6216d308CbE7548C14d2af83a9',
     }
 
     constructor(props) {

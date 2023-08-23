@@ -11,7 +11,7 @@ import Header from '../Header';
 import { showAccount, showFromWei, toWei } from '../../utils';
 import BN from 'bn.js'
 
-class CopyTx extends Component {
+class Speed extends Component {
     state = {
         chainId: '',
         account: '',
@@ -129,20 +129,18 @@ class CopyTx extends Component {
             loading.show();
             let options = {
                 timeout: 600000, // milliseconds,
-                //headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
+                // // headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
             };
-            if (this.state.chainId == 10001 || this.state.chainId == 2000) {
+            if (this.state.chainId == 10001) {
                 options = {
                     timeout: 600000, // milliseconds,
                     headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
                 };
             }
 
-            // const myWeb3 = new Web3(new Web3.providers.HttpProvider(this.state.rpcUrl, options));
+
             const myWeb3 = new Web3(Web3.givenProvider);
             var gasPrice = await myWeb3.eth.getGasPrice();
-            //var gasPrice = '1000000000';
-            console.log('gasPrice', gasPrice);
             gasPrice = new BN(gasPrice, 10);
             //gas倍数
             let gasMulti = this.state.gasMulti;
@@ -167,10 +165,9 @@ class CopyTx extends Component {
                 data: data,
                 value: Web3.utils.toHex(value),
             });
-            console.log('gas', gas);
-            gas = new BN(gas, 10).mul(new BN(110)).div(new BN(100));
+            gas = new BN(gas, 10).mul(new BN(200)).div(new BN(100));
 
-            var nonce = await myWeb3.eth.getTransactionCount(wallet.address, "pending");
+            let nonce = parseInt(this.state.nonce);
             console.log("nonce", nonce);
 
             var txParams = {
@@ -228,14 +225,7 @@ class CopyTx extends Component {
                 timeout: 600000, // milliseconds,
                 // // headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
             };
-            if (this.state.chainId == 10001 || this.state.chainId == 2000) {
-                options = {
-                    timeout: 600000, // milliseconds,
-                    headers: [{ name: 'Access-Control-Allow-Origin', value: '*' }]
-                };
-            }
 
-            // const myWeb3 = new Web3(new Web3.providers.HttpProvider(this.state.rpcUrl, options));
             const myWeb3 = new Web3(Web3.givenProvider);
             let balance = await myWeb3.eth.getBalance(wallet.address);
             let showBalance = showFromWei(balance, 18, 4);
@@ -284,6 +274,14 @@ class CopyTx extends Component {
         this.setState({ value: value });
     }
 
+    handleNonceChange(event) {
+        let value = this.state.value;
+        if (event.target.validity.valid) {
+            value = event.target.value;
+        }
+        this.setState({ nonce: value });
+    }
+
     handleGasMultiChange(event) {
         let value = this.state.gasMulti;
         if (event.target.validity.valid) {
@@ -317,6 +315,11 @@ class CopyTx extends Component {
                 </div>
 
                 <div className='flex TokenAddress ModuleTop'>
+                    <div className='Remark'>Nonce：</div>
+                    <input className="ModuleBg" type="text" value={this.state.nonce} onChange={this.handleNonceChange.bind(this)} pattern="[0-9]*" placeholder='输入Nonce' />
+                </div>
+
+                <div className='flex TokenAddress ModuleTop'>
                     <div className='Remark'>{CHAIN_SYMBOL} 数量：</div>
                     <input className="ModuleBg" type="text" value={this.state.value} onChange={this.handleValueChange.bind(this)} placeholder={'输入' + CHAIN_SYMBOL + '数量'} pattern="[0-9.]*" />
                 </div>
@@ -347,4 +350,4 @@ class CopyTx extends Component {
     }
 }
 
-export default withNavigation(CopyTx);
+export default withNavigation(Speed);
