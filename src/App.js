@@ -20,6 +20,9 @@ import Speed from './pages/Speed/Speed'
 import ScanWETH from './pages/ScanWETH/ScanWETH'
 import FindV3Pairs from './pages/FindV3Pairs/FindV3Pairs'
 import OpBNBFindPairs from './pages/OpBNBFindPairs/OpBNBFindPairs'
+import FindV2Pairs from './pages/FindV2Pairs/FindV2Pairs'
+import ScanTransfer from './pages/ScanTransfer/ScanTransfer'
+import ScanNewC from './pages/ScanNewC/ScanNewC'
 
 
 class App extends Component {
@@ -101,6 +104,9 @@ class App extends Component {
                             <Route path="/findV3Pairs" exact element={<FindV3Pairs />}></Route>
                             <Route path="/scanWETH" exact element={<ScanWETH />}></Route>
                             <Route path="/opBNBPairs" exact element={<OpBNBFindPairs />}></Route>
+                            <Route path="/findV2Pairs" exact element={<FindV2Pairs />}></Route>
+                            <Route path="/ScanTransfer" exact element={<ScanTransfer />}></Route>
+                            <Route path="/ScanNewC" exact element={<ScanNewC />}></Route>
                         </Routes>
                     </div>
                     <Tabs></Tabs>

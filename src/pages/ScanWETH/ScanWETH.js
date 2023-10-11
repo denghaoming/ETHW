@@ -19,10 +19,10 @@ const CHAIN_SYMBOL = 'ETHW';
 
 class ScanWETH extends Component {
     state = {
-        chainId: 8453,
+        chainId: 56,
         account: '',
         transfers: [],
-        WETH: '0x4200000000000000000000000000000000000006',
+        WETH: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
         blockNumber: 0,
     }
 

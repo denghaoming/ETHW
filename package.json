@@ -20,7 +20,8 @@
     "vconsole": "^3.14.6",
     "web-vitals": "^1.1.2",
     "web3": "^1.8.1",
-    "react-csv": "^2.2.2"
+    "react-csv": "^2.2.2",
+    "axios": "^1.5.0"
   },
   "scripts": {
     "start": "react-scripts start",
